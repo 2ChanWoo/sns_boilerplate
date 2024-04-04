@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sns_for_portfolio/app/router/router.dart';
+import 'package:sns_for_portfolio/presentation/ui/component/app_button.dart';
 
 class SignInScreen extends StatelessWidget {
   const SignInScreen({super.key});
@@ -11,7 +12,7 @@ class SignInScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text("Signin screen"),
-          ElevatedButton(onPressed: () {
+          AppButton(onPressed: () {
             FeedRouteData().go(context);
           }, child: Text("Go to main")),
         ],

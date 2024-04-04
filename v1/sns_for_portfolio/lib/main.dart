@@ -10,12 +10,17 @@ void main() {
 class MyApp extends StatelessWidget {
   MyApp({super.key});
 
+  final _lightTheme = LightThemeData();
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      debugShowCheckedModeBanner: false,
-      routerConfig: router,
+    return AppTheme(
+      lightTheme: _lightTheme,
+      child: MaterialApp.router(
+        theme: _lightTheme.materialThemeData,
+        debugShowCheckedModeBanner: false,
+        routerConfig: router,
+      ),
     );
   }
 }
