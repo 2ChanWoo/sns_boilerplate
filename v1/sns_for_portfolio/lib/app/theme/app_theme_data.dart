@@ -23,6 +23,8 @@ abstract class AppThemeData {
 
   Color get textFieldSuffixIconColorLightGrey;
 
+  Color get quoteSvgColor;
+
   ///
 
   double get buttonDefaultPaddingVertical;
@@ -34,6 +36,10 @@ abstract class AppThemeData {
   double get buttonDefaultPaddingHorizontalLarge;
 
   TextStyle get textStyle;
+
+  TextStyle quoteTextStyle = const TextStyle(
+    fontFamily: 'Fondamento',
+  );
 }
 
 class LightThemeData extends AppThemeData {
@@ -46,7 +52,6 @@ class LightThemeData extends AppThemeData {
         backgroundColor: componentBackgroundColor,
         foregroundColor: Colors.black,
       ),
-      fontFamily: 'notoKr',
       dividerTheme: _dividerThemeData,
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
         selectedItemColor: selectedBottomNavigationItemColor,
@@ -105,6 +110,9 @@ class LightThemeData extends AppThemeData {
 
   @override
   Color get selectedBottomNavigationItemColor => componentBackgroundColor;
+
+  @override
+  Color get quoteSvgColor => Colors.black;
 
   @override
   double get buttonDefaultPaddingVertical => 12;
