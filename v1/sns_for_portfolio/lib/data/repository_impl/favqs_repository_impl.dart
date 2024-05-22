@@ -9,9 +9,9 @@ import '../../domain/entity/quote_list_page_entity.dart';
 
 class FavQsServiceRepository_impl implements FavQsServiceRepository {
   @override
-  Future<QuoteListPage> fetchQuotes() async {
+  Future<QuoteListPage> fetchQuoteListPage(String page) async {
     Log.i("fetchQuotes()");
-    final Uint8List response = await FavQsService.getQuotes().request();
+    final Uint8List response = await FavQsService.getQuoteListPage(page: page).request();
     return QuoteListPage.fromJson(jsonDecode(utf8.decode(response)));
   }
 }

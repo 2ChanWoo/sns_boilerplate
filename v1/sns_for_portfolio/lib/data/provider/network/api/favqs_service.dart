@@ -1,6 +1,13 @@
+import 'package:sns_for_portfolio/app/util/extension.dart';
+
 import '../api_endpoint.dart';
 import '../api_provider.dart';
 import '../api_request_representable.dart';
+
+enum FavQsServiceUrlQueryKey {
+  page;
+
+}
 
 enum FavQsServiceType {
 
@@ -17,8 +24,10 @@ enum FavQsServiceType {
 class FavQsService implements APIRequestRepresentable {
   final FavQsServiceType type;
 
-  FavQsService._({required this.type, this.body});
-  FavQsService.getQuotes(): this._(type: FavQsServiceType.quotes);
+  final String? page;
+
+  FavQsService._({required this.type, this.body, this.page});
+  FavQsService.getQuoteListPage({String? page}): this._(type: FavQsServiceType.quotes, page: page);
 
   @override
   Map<String, dynamic>? body;
@@ -46,7 +55,28 @@ class FavQsService implements APIRequestRepresentable {
   }
 
   @override
-  Map<String, String>? get query => null;
+  String get query {
+    /// Uri(queryParameters: ~)
+    /// queryParameters, Map<String, dynamic> 이지만, value에 int 넣으면 에러
+    ///
+    /// ㄴ> 타입에 주석으로 /*String?|Iterable<String>*/ 라고 되어 있음. 두 경우만 가능한 것 같다.
+    ///
+    /// Uri(queryParameters: {'asd': ['1','2','3']}).toString()
+    /// == "asd=1&asd=2&asd=3
+    return switch (type) {
+      FavQsServiceType.quotes => Uri(queryParameters: {
+          FavQsServiceUrlQueryKey.page.name: page,
+        }).toString()
+    };
+
+    // final Map<String, String?> queryMap = switch (type) {
+    //   FavQsServiceType.quotes => {
+    //       FavQsServiceUrlQueryKey.page.name: page,
+    //     }
+    // };
+    //
+    // return Uri().toQueryString(queryMap);
+  }
 
   @override
   Future request() {
@@ -54,5 +84,7 @@ class FavQsService implements APIRequestRepresentable {
   }
 
   @override
-  Uri get url => Uri.parse(endpoint + path);
+  Uri get url {
+    return Uri.parse(endpoint + path + query);
+  }
 }
