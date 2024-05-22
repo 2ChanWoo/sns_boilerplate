@@ -10,7 +10,7 @@ class FetchQuoteListPageUseCase implements UseCase<QuoteListPage, FetchQuoteList
   @override
   execute(FetchQuoteListPageUseCaseParams params) async {
     int page = params.page;
-    return await repo.fetchQuotes(page.toString());
+    return await repo.fetchQuoteListPage(page.toString());
   }
 }
 class FetchQuoteListPageUseCaseParams {
