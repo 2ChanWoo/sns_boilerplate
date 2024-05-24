@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sns_for_portfolio/app/router/router.dart';
 import 'package:sns_for_portfolio/app/theme/app_theme.dart';
 import 'package:sns_for_portfolio/app/theme/app_theme_data.dart';
-import 'package:sns_for_portfolio/data/repository_impl/favqs_repository_impl.dart';
-import 'package:sns_for_portfolio/domain/repository/favqs_repository.dart';
+import 'package:sns_for_portfolio/data/repository_impl/quote_repository_impl.dart';
+import 'package:sns_for_portfolio/domain/repository/quote_repository.dart';
 import 'package:sns_for_portfolio/domain/usecase/fetch_quote_list_page_usecase.dart';
 import 'package:sns_for_portfolio/presentation/bloc/quote_list/quote_list_bloc.dart';
 
@@ -12,8 +12,8 @@ void main() {
   runApp(
     MultiRepositoryProvider(
       providers: [
-        RepositoryProvider<FavQsServiceRepository>(
-            create: (context) => FavQsServiceRepository_impl())
+        RepositoryProvider<QuoteServiceRepository>(
+            create: (context) => QuoteServiceRepository_impl())
       ],
       child: MyApp(),
     ),
