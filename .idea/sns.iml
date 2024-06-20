@@ -6,6 +6,12 @@
       <excludeFolder url="file://$MODULE_DIR$/v1/sns_for_portfolio/.dart_tool" />
       <excludeFolder url="file://$MODULE_DIR$/v1/sns_for_portfolio/.pub" />
       <excludeFolder url="file://$MODULE_DIR$/v1/sns_for_portfolio/build" />
+      <excludeFolder url="file://$MODULE_DIR$/v1/sns_for_portfolio/ios/.symlinks/plugins/shared_preferences_foundation/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/v1/sns_for_portfolio/ios/.symlinks/plugins/shared_preferences_foundation/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/v1/sns_for_portfolio/ios/.symlinks/plugins/shared_preferences_foundation/build" />
+      <excludeFolder url="file://$MODULE_DIR$/v1/sns_for_portfolio/ios/.symlinks/plugins/shared_preferences_foundation/example/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/v1/sns_for_portfolio/ios/.symlinks/plugins/shared_preferences_foundation/example/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/v1/sns_for_portfolio/ios/.symlinks/plugins/shared_preferences_foundation/example/build" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

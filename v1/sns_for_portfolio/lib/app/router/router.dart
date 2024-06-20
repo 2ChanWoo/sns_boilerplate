@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sns_for_portfolio/presentation/ui/screen/creation/creation_screen.dart';
 import 'package:sns_for_portfolio/presentation/ui/screen/feed/feed_screen.dart';
@@ -147,6 +148,9 @@ class SignInRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return SignInScreen();
+    return SignInScreen(
+      authRepository: context.read(),
+      onSignInSuccess: () {},
+    );
   }
 }

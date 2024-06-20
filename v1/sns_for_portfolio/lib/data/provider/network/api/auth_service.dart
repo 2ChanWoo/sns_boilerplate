@@ -2,23 +2,23 @@ import '../api_endpoint.dart';
 import '../api_provider.dart';
 import '../api_request_representable.dart';
 
-enum FavQsServiceType {
+enum AuthServiceType {
 
   /// POST
-  quotes("/quotes");
+  session("/session");
 
   final String _path;
 
-  const FavQsServiceType(this._path);
+  const AuthServiceType(this._path);
 
   String get path => _path;
 }
 
-class FavQsService implements APIRequestRepresentable {
-  final FavQsServiceType type;
+class AuthService implements APIRequestRepresentable {
+  final AuthServiceType type;
 
-  FavQsService._({required this.type, this.body});
-  FavQsService.getQuotes(): this._(type: FavQsServiceType.quotes);
+  AuthService._({required this.type, this.body});
+  AuthService.session(Map<String, dynamic>? body): this._(type: AuthServiceType.session, body: body);
 
   @override
   Map<String, dynamic>? body;
@@ -32,21 +32,21 @@ class FavQsService implements APIRequestRepresentable {
   @override
   HttpMethod get method {
     switch(type) {
-      case FavQsServiceType.quotes:
-        return HttpMethod.get;
+      case AuthServiceType.session:
+        return HttpMethod.post;
     }
   }
 
   @override
   String get path {
     switch(type) {
-      case FavQsServiceType.quotes:
-        return FavQsServiceType.quotes.path;
+      case AuthServiceType.session:
+        return AuthServiceType.session.path;
     }
   }
 
   @override
-  Map<String, String>? get query => null;
+  String get query => '';
 
   @override
   Future request() {
@@ -54,5 +54,7 @@ class FavQsService implements APIRequestRepresentable {
   }
 
   @override
-  Uri get url => Uri.parse(endpoint + path);
+  Uri get url {
+    return Uri.parse(endpoint + path + query);
+  }
 }
