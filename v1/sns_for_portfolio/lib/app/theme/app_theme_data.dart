@@ -50,7 +50,7 @@ class LightThemeData extends AppThemeData {
       primarySwatch: componentBackgroundColor.toMaterialColor(),
       appBarTheme: AppBarTheme(
         backgroundColor: componentBackgroundColor,
-        foregroundColor: Colors.black,
+        foregroundColor: componentContentColor,
       ),
       dividerTheme: _dividerThemeData,
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
@@ -73,7 +73,7 @@ class LightThemeData extends AppThemeData {
       elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
         backgroundColor: componentBackgroundColor,
-        foregroundColor: componentContentColor,
+        foregroundColor: componentContentColor, /// button의 Text(child)가 아래 TextStyle이 아닌 foregroundColor를 따른다.
         textStyle: textStyle.copyWith(fontSize: 16),
       ))
       // expansionTileTheme: ExpansionTileThemeData(
