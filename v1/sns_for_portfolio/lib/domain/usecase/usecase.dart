@@ -19,5 +19,5 @@ abstract class UseCase<T, P> {
 // Future<QuoteListPage> execute([void _]) async {} //TODO: => is it Non-abstract?
 
 abstract class StreamUseCase<T, P> {
-  Stream<T> stream(P params);
+  Stream<T> stream([P params]);
 }
