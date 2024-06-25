@@ -30,11 +30,11 @@ class QuoteListBloc extends Bloc<QuoteListEvent, QuoteListState> {
   QuoteListBloc(this.fetchQuoteListPageUsaCase)
       : super(QuoteListFetchState(
             ApiResponse.completed(const QuoteListPage(page: 0, isLastPage: false, quotes: [])))) {
-    on<QuoteListEvent>((event, emit) {
+    on<QuoteListEvent>((event, emit) async {
       Log.i("QuoteListBloc/on()- event: $event");
       switch (event) {
         case QuotePageListFetchEvent():
-          _quoteListPageFetch(emit, event);
+          await _quoteListPageFetch(emit, event);
         default:
           Log.e(UnimplementedError("Not implemented event(${event.toString()})"), StackTrace.current);
       }
@@ -57,7 +57,7 @@ class QuoteListBloc extends Bloc<QuoteListEvent, QuoteListState> {
     // emit(QuoteListFetchState(ApiResponse.loading("Quote page fetch:: page: ${event.page}")));
     final pageStream = quotePageStream(event.page);
 
-    return emit.onEach(pageStream, onData: emit);
+    await emit.onEach(pageStream, onData: emit);
   }
 
   Stream<QuoteListState> quotePageStream(int page) async* {
