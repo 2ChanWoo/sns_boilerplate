@@ -150,7 +150,6 @@ class SignInRoute extends GoRouteData {
   Widget build(BuildContext context, GoRouterState state) {
     return SignInScreen(
       authRepository: context.read(),
-      onSignInSuccess: () {},
     );
   }
 }
