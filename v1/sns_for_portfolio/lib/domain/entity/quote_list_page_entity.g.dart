@@ -8,7 +8,7 @@ part of 'quote_list_page_entity.dart';
 
 QuoteListPage _$QuoteListPageFromJson(Map<String, dynamic> json) =>
     QuoteListPage(
-      page: json['page'] as int,
+      page: (json['page'] as num).toInt(),
       isLastPage: json['last_page'] as bool,
       quotes: (json['quotes'] as List<dynamic>)
           .map((e) => Quote.fromJson(e as Map<String, dynamic>))

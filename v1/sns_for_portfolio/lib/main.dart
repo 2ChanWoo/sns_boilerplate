@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sns_for_portfolio/app/router/router.dart';
 import 'package:sns_for_portfolio/app/theme/app_theme.dart';
 import 'package:sns_for_portfolio/app/theme/app_theme_data.dart';
@@ -19,7 +20,7 @@ void main() {
         RepositoryProvider<AuthRepository>(
             create: (context) => AuthRepository_impl()),
       ],
-      child: MyApp(),
+      child: ProviderScope(child: MyApp()),
     ),
   );
 }
