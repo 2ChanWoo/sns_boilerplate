@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sns_for_portfolio/app/util/extension.dart';
@@ -8,7 +7,6 @@ import 'package:sns_for_portfolio/data/provider/network/api_response.dart';
 import 'package:sns_for_portfolio/domain/repository/auth_repository.dart';
 import 'package:sns_for_portfolio/domain/usecase/auth_stream_usecase.dart';
 import 'package:sns_for_portfolio/domain/usecase/signin_usecase.dart';
-import 'package:sns_for_portfolio/presentation/bloc/auth/auth_bloc.dart';
 import 'package:sns_for_portfolio/presentation/controller/auth/auth.dart';
 
 import '../../../../app/router/router.dart';
@@ -16,22 +14,12 @@ import '../../component/exception_indicator.dart';
 
 class SignInScreen extends StatelessWidget {
   const SignInScreen({
-    required this.authRepository,
     Key? key,
   }) : super(key: key);
 
-  final AuthRepository authRepository;
-
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<AuthBloc>(
-      create: (_) {
-        final useCase = SignInUseCase(authRepository);
-        final streamUseCase = AuthStreamUseCase(authRepository);
-        return AuthBloc(useCase, streamUseCase);
-      },
-      child: SignInView(),
-    );
+    return SignInView();
   }
 }
 
@@ -105,91 +93,80 @@ class _SignInFormState extends ConsumerState<_SignInForm> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AuthBloc, AuthState>(
-      listener: (context, state) {
-        if (state is AuthStateSigned && state.response.status == ApiStatus.COMPLETED) {
-          FeedRouteData().go(context);
-        }
-      },
-      builder: (context, state) {
-        final controller = ref.watch(authProvider);
-        final bloc = context.read<AuthBloc>();
-        bool submitting = (state is AuthStateSigned && state.response.status == ApiStatus.LOADING);
+    final controller = ref.watch(authProvider);
 
-        return Column(
-          children: <Widget>[
-            TextField(
-              controller: _emailTextController,
-              focusNode: _emailFocusNode,
-              // TODO onChanged: bloc.onEmailChanged,
-              textInputAction: TextInputAction.next,
-              autocorrect: false,
-              decoration: InputDecoration(
-                suffixIcon: const Icon(
-                  Icons.alternate_email,
-                ),
-                // TODO enabled: !isSubmissionInProgress,
-                labelText: "E-mail",
-                // errorText:
-              ),
+    return Column(
+      children: <Widget>[
+        TextField(
+          controller: _emailTextController,
+          focusNode: _emailFocusNode,
+          // TODO onChanged: bloc.onEmailChanged,
+          textInputAction: TextInputAction.next,
+          autocorrect: false,
+          decoration: InputDecoration(
+            suffixIcon: const Icon(
+              Icons.alternate_email,
             ),
-            const SizedBox(
-              height: 20,
+            // TODO enabled: !isSubmissionInProgress,
+            labelText: "E-mail",
+            // errorText:
+          ),
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        TextField(
+          controller: _passwordTextController,
+          focusNode: _passwordFocusNode,
+          obscureText: true,
+          decoration: InputDecoration(
+            suffixIcon: const Icon(
+              Icons.password,
             ),
-            TextField(
-              controller: _passwordTextController,
-              focusNode: _passwordFocusNode,
-              obscureText: true,
-              decoration: InputDecoration(
-                suffixIcon: const Icon(
-                  Icons.password,
-                ),
-                labelText: "Password",
-                // errorText:
-              ),
-            ),
-            TextButton(
-              child: Text(
-                "Forgot my password",
-              ),
-              onPressed: () {},
-            ),
-            const SizedBox(
-              height: 8,
-            ),
-            controller.isLoading
-                ? ExpandedElevatedButton.inProgress(label: "Sign In")
-                : ExpandedElevatedButton(
-                    onTap: () {
-                      // bloc.add(AuthEventSignIn(
-                      //   _emailTextController.text,
-                      //   _passwordTextController.text,
-                      // ));
-                      ref.read(authProvider.notifier).signIn(
-                            email: _emailTextController.text,
-                            password: _passwordTextController.text,
-                          );
-                    },
-                    label: "Sign In",
-                    icon: const Icon(
-                      Icons.login,
-                    ),
-                  ),
-            const SizedBox(
-              height: 48,
-            ),
-            Text(
-              "Don't have account?",
-            ),
-            TextButton(
-              child: Text(
-                "Sign Up",
-              ),
-              onPressed: () {},
-            ),
-          ],
-        );
-      },
+            labelText: "Password",
+            // errorText:
+          ),
+        ),
+        TextButton(
+          child: Text(
+            "Forgot my password",
+          ),
+          onPressed: () {},
+        ),
+        const SizedBox(
+          height: 8,
+        ),
+        controller.isLoading
+            ? ExpandedElevatedButton.inProgress(label: "Sign In")
+            : ExpandedElevatedButton(
+          onTap: () {
+            // bloc.add(AuthEventSignIn(
+            //   _emailTextController.text,
+            //   _passwordTextController.text,
+            // ));
+            ref.read(authProvider.notifier).signIn(
+              email: _emailTextController.text,
+              password: _passwordTextController.text,
+            );
+          },
+          label: "Sign In",
+          icon: const Icon(
+            Icons.login,
+          ),
+        ),
+        const SizedBox(
+          height: 48,
+        ),
+        Text(
+          "Don't have account?",
+        ),
+        TextButton(
+          child: Text(
+            "Sign Up",
+          ),
+          onPressed: () {},
+        ),
+      ],
     );
   }
 }
