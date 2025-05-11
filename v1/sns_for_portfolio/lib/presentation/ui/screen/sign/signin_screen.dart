@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sns_for_portfolio/app/util/extension.dart';
 import 'package:sns_for_portfolio/data/provider/network/api_response.dart';
 import 'package:sns_for_portfolio/domain/repository/auth_repository.dart';
 import 'package:sns_for_portfolio/domain/usecase/auth_stream_usecase.dart';
 import 'package:sns_for_portfolio/domain/usecase/signin_usecase.dart';
 import 'package:sns_for_portfolio/presentation/bloc/auth/auth_bloc.dart';
+import 'package:sns_for_portfolio/presentation/controller/auth/auth.dart';
 
 import '../../../../app/router/router.dart';
 import '../../component/exception_indicator.dart';
@@ -64,25 +67,31 @@ class SignInView extends StatelessWidget {
   void _releaseFocus(BuildContext context) => FocusScope.of(context).unfocus();
 }
 
-class _SignInForm extends StatefulWidget {
+class _SignInForm extends ConsumerStatefulWidget {
   const _SignInForm({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<_SignInForm> createState() => _SignInFormState();
+  ConsumerState<_SignInForm> createState() => _SignInFormState();
 }
 
-class _SignInFormState extends State<_SignInForm> {
-  final _emailTextController = TextEditingController(text: "dlcksdn95@gmail.com");
+class _SignInFormState extends ConsumerState<_SignInForm> {
+  final _emailTextController = TextEditingController();
   final _emailFocusNode = FocusNode();
-  final _passwordTextController = TextEditingController(text: "3ac9a5233bbade523bb1");
+  final _passwordTextController = TextEditingController();
   final _passwordFocusNode = FocusNode();
 
   @override
   void initState() {
     super.initState();
     //TODO: Add SignIn Textform validation
+
+    ref.listenManual(authProvider, (pref, next) {
+      if(next is AsyncData && next.value.hasValue) {
+        FeedRouteData().go(context);
+      }
+    });
   }
 
   @override
@@ -103,8 +112,10 @@ class _SignInFormState extends State<_SignInForm> {
         }
       },
       builder: (context, state) {
+        final controller = ref.watch(authProvider);
         final bloc = context.read<AuthBloc>();
         bool submitting = (state is AuthStateSigned && state.response.status == ApiStatus.LOADING);
+
         return Column(
           children: <Widget>[
             TextField(
@@ -146,14 +157,18 @@ class _SignInFormState extends State<_SignInForm> {
             const SizedBox(
               height: 8,
             ),
-            submitting
+            controller.isLoading
                 ? ExpandedElevatedButton.inProgress(label: "Sign In")
                 : ExpandedElevatedButton(
                     onTap: () {
-                      bloc.add(AuthEventSignIn(
-                        _emailTextController.text,
-                        _passwordTextController.text,
-                      ));
+                      // bloc.add(AuthEventSignIn(
+                      //   _emailTextController.text,
+                      //   _passwordTextController.text,
+                      // ));
+                      ref.read(authProvider.notifier).signIn(
+                            email: _emailTextController.text,
+                            password: _passwordTextController.text,
+                          );
                     },
                     label: "Sign In",
                     icon: const Icon(

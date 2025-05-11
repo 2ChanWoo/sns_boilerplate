@@ -1,11 +1,15 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sns_for_portfolio/data/provider/network/api/auth_service.dart';
 import 'package:sns_for_portfolio/domain/repository/auth_repository.dart';
 
 import '../../domain/entity/session_entity.dart';
+
+part 'auth_repository_impl.g.dart';
 
 class AuthRepository_impl extends AuthRepository{
   final BehaviorSubject<Session> _sessionSubject = BehaviorSubject();
@@ -22,4 +26,9 @@ class AuthRepository_impl extends AuthRepository{
   Stream<Session> sessionStream() async*{
    yield* _sessionSubject.stream;
   }
+}
+
+@riverpod
+AuthRepository authRepository(Ref ref) {
+  return AuthRepository_impl();
 }
